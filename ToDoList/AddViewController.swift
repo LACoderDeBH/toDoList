@@ -9,27 +9,38 @@
 import UIKit
 
 class AddViewController: UIViewController {
-
+    
+    //reference to previous viewcontroller
+    var previousVC = ToDoTableViewController()
+    
+    @IBOutlet weak var titleTextField: UITextField!
+    
+    @IBOutlet weak var importantSwitch: UISwitch!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    //make new ToDo item
+    @IBAction func addTapped(_ sender: Any) {
+        let toDo = ToDo()
+        
+        //check if text field is not empty to proceed
+        if let titleText = titleTextField.text {
+            toDo.name = titleText
+            toDo.important = importantSwitch.isOn
+            
+            //toDos is the array of todo's and add new toDo
+            previousVC.toDos.append(toDo)
+            //refresh table view to update items added
+            previousVC.tableView.reloadData()
+            
+            //move back a view controller (pooping) after you add a todo item
+            navigationController?.popViewController(animated: true)
+            
+        }
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
