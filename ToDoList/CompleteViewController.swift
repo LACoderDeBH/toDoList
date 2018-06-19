@@ -12,17 +12,28 @@ class CompleteViewController: UIViewController {
 
     //reference to previous viewcontroller
     var previousVC = ToDoTableViewController()
-    var selectedToDo = ToDo() //generic ToDo object
+    var selectedToDo : ToDoCoreData?
     
     @IBOutlet weak var titleLabel: UILabel!
     
     //what to display for this view: item about to me marked complete
     override func viewDidLoad() {
         super.viewDidLoad()
-        titleLabel.text = selectedToDo.name
+        titleLabel.text = selectedToDo?.name
     }
-
+    
+    //update view when task is complete 
     @IBAction func completeTapped(_ sender: Any) {
+        
+        //get context
+        if let context = (UIApplication.shared.delegate as?
+            AppDelegate)?.persistentContainer.viewContext {
+            if let theToDo = selectedToDo {
+                context.delete(theToDo)
+                navigationController?.popViewController(animated: true)
+            }
+        }
+        /*
         var index = 0
         for toDo in previousVC.toDos {
             if toDo.name == selectedToDo.name {
@@ -34,5 +45,6 @@ class CompleteViewController: UIViewController {
             }
             index += 1
         }
+         */
     }
 }
